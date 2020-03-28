@@ -3,8 +3,9 @@ class Card:
         self.suit = suit
         self.val = val
 
+    #show card
     def show(self):
-        print("suit:{}, value: {}".format(self.suit, self.val))
+        print("{} of {}".format(self.val, self.suit))
 
 
         

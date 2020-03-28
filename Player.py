@@ -1,3 +1,26 @@
+from Card import Card
+from Deck import Deck
 
-# class Player:
-#     def __init__(self):
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+    #Draw card append to hand
+    def draw(self, card):
+        self.hand.append(card)
+
+    #Show hand
+    def show(self):
+        i = 1
+        for c in self.hand:
+            print("{}.".format(i), end = " ")
+            c.show()
+            i += 1
+
+    #Discard card hand with number
+    def discard(self, card_number):
+        if ( 0 <= card_number -1 and card_number-1 < len(self.hand)):
+            del self.hand[card_number-1]
+        else:
+            print("Unidentifiable number")

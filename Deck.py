@@ -1,3 +1,4 @@
+import random
 from Card import Card
 
 class Deck:
@@ -11,12 +12,15 @@ class Deck:
             for v in range(1,14):
                 self.cards.append(Card(s,v))
 
+    #Show cards in deck
     def show(self):
         for c in self.cards:
             c.show()
     
+    #Shuffle order of cards
     def shuffle(self):
-        
-deck = Deck()
-deck.build()
-deck.show()
+        random.shuffle(self.cards)
+
+    #Draw top card
+    def draw(self):
+        return self.cards.pop()
