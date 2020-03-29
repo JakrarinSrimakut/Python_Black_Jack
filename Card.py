@@ -6,6 +6,3 @@ class Card:
     #show card
     def show(self):
         print("{} of {}".format(self.val, self.suit))
-
-
-        
