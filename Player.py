@@ -18,8 +18,11 @@ class Player:
             c.show()
             i += 1
 
+    def discard_hand(self):
+        self.hand.clear()
+        
     #Discard card hand with number
-    def discard(self, card_number):
+    def discard_specific_card(self, card_number):
         if ( 0 <= card_number -1 and card_number-1 < len(self.hand)):
             del self.hand[card_number-1]
         else:
