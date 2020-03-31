@@ -2,7 +2,10 @@ from Card import Card
 from Deck import Deck
 from Player import Player
 
+#TODO Give value of ace as 1 or 11
+#TODO Check on initial_deal() for black jack
 #TODO Change 11 to Jack, 12 to Queen, 13 to King, 1 to ace
+#TODO Refine stand and deal section into one method
 
 action_prompt = "-----Player's Move-----\n1.Hit \n2.Stand \nEnter:"
 
@@ -48,14 +51,26 @@ def hand_result(player, opponent):
         show_hands()
         print("{}'s hand is {}. Bust. {} wins!".format(player.name, player.hand_val, opponent.name))
         new_round()
+
     elif(player.hand_val == 21):
         show_hands()
         print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
         new_round()
+        
     else:
         show_hands()
         print("{}'s hand is {}".format(player.name, player.hand_val))
 
+
+def check_winner(player, opponent):
+    if(player.hand_val > opponent.hand_val):
+        print("{} wins!".format(player.name))
+    elif(player.hand_val < opponent.hand_val):
+        print("{} wins!".format(opponent.name))
+    else:
+        print('Tie!')
+    new_round()
+    
 #Setup card to input into deck
 deck = Deck()
 deck.shuffle()
@@ -67,6 +82,8 @@ initial_deal()
 
 while(True):
 
+    update_hand_value(player_1)
+    update_hand_value(dealer)
     #player's move
     player_move = input(action_prompt)
     #Player actions
@@ -80,6 +97,6 @@ while(True):
             dealer.draw(deck.draw())
             update_hand_value(dealer)
             hand_result(dealer,player_1)
-        print("Check player's and dealer's hands")
+        check_winner(player_1,dealer)
     else:
         print("UNRECOGNIZE COMMAND NUMBER. ENTER NUMBER IN PLAYER'S MOVE")
