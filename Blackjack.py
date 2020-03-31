@@ -2,6 +2,8 @@ from Card import Card
 from Deck import Deck
 from Player import Player
 
+#TODO Change 11 to Jack, 12 to Queen, 13 to King, 1 to ace
+
 action_prompt = "-----Player's Move-----\n1.Hit \n2.Stand \nEnter:"
 
 def show_dealer_hand():
@@ -9,32 +11,22 @@ def show_dealer_hand():
     dealer.show()
 
 def show_player_hand():
-    print("-----{}-----".format(player.name))
-    player.show()
+    print("-----{}-----".format(player_1.name))
+    player_1.show()
 
 def show_hands():
     show_dealer_hand()
     show_player_hand()
 
 def initial_deal():
-    player.draw(deck.draw())
+    player_1.draw(deck.draw())
     dealer.draw(deck.draw())
     show_dealer_hand()
-    player.draw(deck.draw())
+    player_1.draw(deck.draw())
     show_player_hand()
 
-# def is_bust():
-#     hand_val = 0
-#     for c in player.hand
-#         hand_val = c.val
-#     if(hand_val > 21)
-#         return True
-#     else:
-#         return False
-
-# def is_black_jack():
 def new_round():
-    player.discard_hand()
+    player_1.discard_hand()
     dealer.discard_hand()
     print("----------New Round----------")
     initial_deal()
@@ -45,28 +37,31 @@ def black_jack_val(val):
     else:
         return val
 
-def hand_result():
-    hand_val = 0
+def update_hand_value(player):
+    player.hand_val = 0 #reset to not add new hand value to prev
     for c in player.hand:
-        hand_val += black_jack_val(c.val)
-    if(hand_val > 21):
+        player.hand_val += black_jack_val(c.val)
+
+def hand_result(player, opponent):
+
+    if(player.hand_val > 21):
         show_hands()
-        print("{}'s hand is {}. Bust. House wins!".format(player.name, hand_val))
+        print("{}'s hand is {}. Bust. {} wins!".format(player.name, player.hand_val, opponent.name))
         new_round()
-    elif(hand_val == 21):
+    elif(player.hand_val == 21):
         show_hands()
-        print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, hand_val, player.name))
+        print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
         new_round()
     else:
         show_hands()
-        print("{}'s hand is {}".format(player.name, hand_val))
+        print("{}'s hand is {}".format(player.name, player.hand_val))
 
 #Setup card to input into deck
 deck = Deck()
 deck.shuffle()
 
 dealer = Player("Dealer")
-player = Player("Jack")
+player_1 = Player("Jack")
 
 initial_deal()
 
@@ -76,10 +71,15 @@ while(True):
     player_move = input(action_prompt)
     #Player actions
     if(player_move == "1"):
-        player.draw(deck.draw())
-        hand_result()
+        player_1.draw(deck.draw())
+        update_hand_value(player_1)
+        hand_result(player_1,dealer)
     #Dealers actions
     elif(player_move == "2"):
-        print("stand")
+        while(dealer.hand_val < 17):
+            dealer.draw(deck.draw())
+            update_hand_value(dealer)
+            hand_result(dealer,player_1)
+        print("Check player's and dealer's hands")
     else:
         print("UNRECOGNIZE COMMAND NUMBER. ENTER NUMBER IN PLAYER'S MOVE")
