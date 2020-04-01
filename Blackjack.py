@@ -2,7 +2,6 @@ from Card import Card
 from Deck import Deck
 from Player import Player
 
-#TODO Give value of ace as 1 or 11
 #TODO Check on initial_deal() for black jack
 #TODO Change 11 to Jack, 12 to Queen, 13 to King, 1 to ace
 #TODO Refine stand and deal section into one method
@@ -21,12 +20,20 @@ def show_hands():
     show_dealer_hand()
     show_player_hand()
 
+def check_black_jack(player):
+        if(player.hand_val == 21):
+            print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
+            #TODO return True or False to restart game 
+
 def initial_deal():
-    player_1.draw(deck.draw())
     dealer.draw(deck.draw())
+    player_1.draw(deck.draw())
     show_dealer_hand()
     player_1.draw(deck.draw())
     show_player_hand()
+    update_hand_value(player_1)
+    update_hand_value(dealer)
+    check_black_jack(player_1)
 
 def new_round():
     player_1.discard_hand()
@@ -42,9 +49,12 @@ def black_jack_val(val):
 
 def update_hand_value(player):
     player.hand_val = 0 #reset to not add new hand value to prev
+    # set indicator for ace
     for c in player.hand:
+        #TODO Give value of ace as 1 or 11
         player.hand_val += black_jack_val(c.val)
-
+    # check if player has ace in hand and is over 21 change ace val to 1
+    
 def hand_result(player, opponent):
 
     if(player.hand_val > 21):
@@ -52,11 +62,6 @@ def hand_result(player, opponent):
         print("{}'s hand is {}. Bust. {} wins!".format(player.name, player.hand_val, opponent.name))
         new_round()
 
-    elif(player.hand_val == 21):
-        show_hands()
-        print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
-        new_round()
-        
     else:
         show_hands()
         print("{}'s hand is {}".format(player.name, player.hand_val))
@@ -82,8 +87,7 @@ initial_deal()
 
 while(True):
 
-    update_hand_value(player_1)
-    update_hand_value(dealer)
+
     #player's move
     player_move = input(action_prompt)
     #Player actions
