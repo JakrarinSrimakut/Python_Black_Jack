@@ -105,7 +105,7 @@ while(True):
         hand_result(player_1,dealer)
     #Dealers actions
     elif(player_move == "2"):
-        while(dealer.hand_val < 17): :#TODO if dealer has keep playing
+        while(dealer.hand_val < 17): #TODO if dealer has keep playing
             dealer.draw(deck.draw())
             update_hand_value(dealer)
             hand_result(dealer,player_1)
