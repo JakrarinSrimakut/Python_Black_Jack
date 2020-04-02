@@ -6,6 +6,7 @@ class Player:
         self.name = name
         self.hand = []
         self.hand_val = 0
+        self.aces_in_hand = 0
 
     #Draw card append to hand
     def draw(self, card):

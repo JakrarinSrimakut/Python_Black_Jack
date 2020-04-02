@@ -2,7 +2,6 @@ from Card import Card
 from Deck import Deck
 from Player import Player
 
-#TODO Check on initial_deal() for black jack
 #TODO Change 11 to Jack, 12 to Queen, 13 to King, 1 to ace
 #TODO Refine stand and deal section into one method
 
@@ -20,11 +19,6 @@ def show_hands():
     show_dealer_hand()
     show_player_hand()
 
-def check_black_jack(player):
-        if(player.hand_val == 21):
-            print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
-            #TODO return True or False to restart game 
-
 def initial_deal():
     dealer.draw(deck.draw())
     player_1.draw(deck.draw())
@@ -33,7 +27,7 @@ def initial_deal():
     show_player_hand()
     update_hand_value(player_1)
     update_hand_value(dealer)
-    check_black_jack(player_1)
+    check_black_jack(player_1) #TODO Check on initial_deal() for black jack
 
 def new_round():
     player_1.discard_hand()
@@ -44,24 +38,38 @@ def new_round():
 def black_jack_val(val):
     if(val > 10 and val < 14):
         return 10
+    elif(val == 1):
+        return 11
     else:
         return val
 
+def check_black_jack(player):
+        if(player.hand_val == 21):
+            print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
+            #TODO return True or False to restart game 
+
 def update_hand_value(player):
     player.hand_val = 0 #reset to not add new hand value to prev
-    # set indicator for ace
+    player.aces_in_hand = 0
     for c in player.hand:
-        #TODO Give value of ace as 1 or 11
+        if(c.val == 1): #increment ace count
+            player.aces_in_hand += 1
         player.hand_val += black_jack_val(c.val)
     # check if player has ace in hand and is over 21 change ace val to 1
-    
+    while(player.aces_in_hand > 0 and player.hand_val > 21):
+        player.hand_val -= 10
+        player.aces_in_hand -= 1
+
 def hand_result(player, opponent):
 
     if(player.hand_val > 21):
         show_hands()
         print("{}'s hand is {}. Bust. {} wins!".format(player.name, player.hand_val, opponent.name))
         new_round()
-
+    #Display 2 results for aces
+    elif(player.aces_in_hand > 0):
+        show_hands()
+        print("{}'s hand is {} or {}".format(player.name, player.hand_val - 10, player.hand_val))
     else:
         show_hands()
         print("{}'s hand is {}".format(player.name, player.hand_val))
@@ -97,7 +105,7 @@ while(True):
         hand_result(player_1,dealer)
     #Dealers actions
     elif(player_move == "2"):
-        while(dealer.hand_val < 17):
+        while(dealer.hand_val < 17): :#TODO if dealer has keep playing
             dealer.draw(deck.draw())
             update_hand_value(dealer)
             hand_result(dealer,player_1)
