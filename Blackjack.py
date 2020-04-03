@@ -20,13 +20,15 @@ def show_hands():
     show_player_hand()
 
 def initial_deal():
-    dealer.draw(deck.draw())
     player_1.draw(deck.draw())
+    dealer.draw(deck.draw())
     show_dealer_hand()
     player_1.draw(deck.draw())
     show_player_hand()
+    #dealer.draw(deck.draw())
     update_hand_value(player_1)
     update_hand_value(dealer)
+    # TODO check dealer also for blackjack
     check_black_jack(player_1) #TODO Check on initial_deal() for black jack
 
 def new_round():
@@ -95,6 +97,7 @@ initial_deal()
 
 while(True):
 
+    # Check if new game is needed run new game
 
     #player's move
     player_move = input(action_prompt)
@@ -105,7 +108,7 @@ while(True):
         hand_result(player_1,dealer)
     #Dealers actions
     elif(player_move == "2"):
-        while(dealer.hand_val < 17): #TODO if dealer has keep playing
+        while(dealer.hand_val < 17): #TODO Extra: if dealer has soft 17 keep playing
             dealer.draw(deck.draw())
             update_hand_value(dealer)
             hand_result(dealer,player_1)
