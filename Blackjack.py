@@ -23,14 +23,14 @@ def show_hands():
 def initial_deal():
     player_1.draw(deck.draw())
     dealer.draw(deck.draw())
-    show_dealer_hand()
+    show_dealer_hand() # Show face up dealer hand
     player_1.draw(deck.draw())
-    show_player_hand()
-    #dealer.draw(deck.draw())
+    show_player_hand() # Show player's hand
+    dealer.draw(deck.draw()) # Draw dealer's hole card
     update_hand_value(player_1)
     update_hand_value(dealer)
     # TODO check dealer also for blackjack
-    check_black_jack(player_1)
+    check_black_jack(player_1, dealer)
 
 def new_round():
     global new_game
@@ -47,10 +47,17 @@ def black_jack_val(val):
     else:
         return val
 
-def check_black_jack(player):
-    if(player.hand_val == 21):
+def check_black_jack(player, dealer):
+    if(player.hand_val == 21 and dealer.hand_val == 21):
+        print('Tie! Black Jack for {} and {}'.format(player.name, dealer.name))
+        new_round()
+    elif(player.hand_val == 21):
         print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
         new_round()
+    elif(dealer.hand_val == 21):
+        print("{}'s hand is {}. Black Jack! {} wins!".format(dealer.name, dealer.hand_val, dealer.name))
+        new_round()
+    
 
 def update_hand_value(player):
     player.hand_val = 0 #reset to not add new hand value to prev
