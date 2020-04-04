@@ -30,7 +30,7 @@ def initial_deal():
     update_hand_value(player_1)
     update_hand_value(dealer)
     # TODO check dealer also for blackjack
-    check_black_jack(player_1) #TODO Check on initial_deal() for black jack
+    check_black_jack(player_1)
 
 def new_round():
     global new_game
@@ -48,9 +48,9 @@ def black_jack_val(val):
         return val
 
 def check_black_jack(player):
-        if(player.hand_val == 21):
-            print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
-            #TODO return True or False to restart game 
+    if(player.hand_val == 21):
+        print("{}'s hand is {}. Black Jack! {} wins!".format(player.name, player.hand_val, player.name))
+        new_round()
 
 def update_hand_value(player):
     player.hand_val = 0 #reset to not add new hand value to prev
