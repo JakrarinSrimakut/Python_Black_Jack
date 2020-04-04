@@ -6,6 +6,7 @@ from Player import Player
 #TODO Refine stand and deal section into one method
 
 action_prompt = "-----Player's Move-----\n1.Hit \n2.Stand \nEnter:"
+new_game = True
 
 def show_dealer_hand():
     print("-----Dealer-----")
@@ -32,10 +33,11 @@ def initial_deal():
     check_black_jack(player_1) #TODO Check on initial_deal() for black jack
 
 def new_round():
+    global new_game
     player_1.discard_hand()
     dealer.discard_hand()
     print("----------New Round----------")
-    initial_deal()
+    new_game = True
 
 def black_jack_val(val):
     if(val > 10 and val < 14):
@@ -93,11 +95,12 @@ deck.shuffle()
 dealer = Player("Dealer")
 player_1 = Player("Jack")
 
-initial_deal()
-
 while(True):
 
     # Check if new game is needed run new game
+    while(new_game):
+        new_game = False
+        initial_deal()
 
     #player's move
     player_move = input(action_prompt)
